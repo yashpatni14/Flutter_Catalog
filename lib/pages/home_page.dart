@@ -68,9 +68,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
                 child: Image.network(item.image),
-                footer: Text(
-                  item.price.toString(),
-                  ),
+                footer: Container(
+                  child: Text(
+                    item.price.toString(),
+                    style: TextStyle(color: Colors.white),
+                ),
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                ),
+              ),
               ));
           },
           itemCount: CatalogModel.items.length,  
