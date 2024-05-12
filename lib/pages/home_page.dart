@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                 CatalogList()
                     .expand() 
               else 
-                const CircularProgressIndicator().centered().expand()
+                const CircularProgressIndicator(color: Colors.black).centered().expand()
             ],
           ).p16(),
         ),
@@ -88,7 +88,7 @@ class CatalogList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: CatalogModel.items.length,
       itemBuilder: (context, index) {
-        final catalog = CatalogModel.items[index];
+        final catalog = CatalogModel.getByPosition(index);
         return InkWell(
           onTap: () => Navigator.push(
             context,
