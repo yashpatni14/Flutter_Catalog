@@ -1,11 +1,13 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_catalog/utils/routes.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_catalog/models/catalog.dart';
-import 'package:flutter_catalog/widgets/drawer.dart';
-import 'package:flutter_catalog/widgets/item_widget.dart';
 import 'package:flutter_catalog/widgets/themes.dart';
+
+import 'home_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,6 +41,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyTheme.creamColor,
+      floatingActionButton: FloatingActionButton(
+      onPressed:() => Navigator.pushNamed(context, MyRoutes.cartRoute) ,
+      backgroundColor: MyTheme.darkBluishColor,
+      foregroundColor: Colors.white,
+      child: const Icon(CupertinoIcons.cart),
+      ) ,
       body: SafeArea(
         child: Container(
           padding: Vx.m32,
@@ -48,13 +56,11 @@ class _HomePageState extends State<HomePage> {
               CatalogHeader(),
               if (CatalogModel.items != null && CatalogModel.items.isNotEmpty)
                 CatalogList()
-                    .expand() // Changed .expand() to .expanded()
-              else
-                const Center(
-                  child: CircularProgressIndicator(),
-                )
+                    .expand() 
+              else 
+                const CircularProgressIndicator().centered().expand()
             ],
-          ),
+          ).p16(),
         ),
       ),
     );
@@ -83,9 +89,20 @@ class CatalogList extends StatelessWidget {
       itemCount: CatalogModel.items.length,
       itemBuilder: (context, index) {
         final catalog = CatalogModel.items[index];
-        return CatalogItem(
-          key: Key(catalog.id.toString()), // Adding a key to each CatalogItem
-          catalog: catalog,
+        return InkWell(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeDetailPage(
+                catalog: catalog,
+                key: Key(catalog.id.toString()),
+              ),
+            ),
+          ),
+          child: CatalogItem(
+            key: Key(catalog.id.toString()), // Adding a key to each CatalogItem
+            catalog: catalog,
+          ),
         );
       },
     );
@@ -102,8 +119,11 @@ class CatalogItem extends StatelessWidget {
     return VxBox(
       child: Row(
         children: [
-          CatalogImage(
-            image: catalog.image,
+          Hero(
+            tag: Key(catalog.id.toString()),
+            child: CatalogImage(
+              image: catalog.image,
+            ),
           ),
           Expanded(
             child: Column(
@@ -125,8 +145,8 @@ class CatalogItem extends StatelessWidget {
                         shape: MaterialStateProperty.all(const StadiumBorder()),
                         foregroundColor: MaterialStateProperty.all(Colors.white),
                         ),
-                    child: "Buy".text.make(),
-                  )
+                    child: "Add to Cart".text.make(),
+                  ).wh(170, 50)
                 ],
               ).pOnly(right: 8.0)
               ],
