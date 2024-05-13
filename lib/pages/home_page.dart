@@ -142,7 +142,7 @@ class CatalogItem extends StatelessWidget {
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   "\$${catalog.price}".text.bold.xl.make(),
-                  _AddToCart(catalog: catalog).wh(170, 50)
+                  AddToCart(catalog: catalog).wh(80, 50)
                 ],
               ).pOnly(right: 8.0)
               ],
@@ -154,37 +154,40 @@ class CatalogItem extends StatelessWidget {
   }
 }
 
-class _AddToCart extends StatefulWidget {
+class AddToCart extends StatefulWidget {
   final Item catalog;
-  const _AddToCart({
+  const AddToCart({
     Key? key,
     required this.catalog,
   }) : super(key: key);
 
   @override
-  State<_AddToCart> createState() => _AddToCartState();
+  State<AddToCart> createState() => _AddToCartState();
 }
 
-class _AddToCartState extends State<_AddToCart> {
-  bool isAdded = false;
+class _AddToCartState extends State<AddToCart> {
+  final _cart = CartModel();
 
   @override
   Widget build(BuildContext context) {
+    bool isInCart = _cart.items.contains(widget.catalog) ?? false;
     return ElevatedButton(
       onPressed: () {
-        isAdded = isAdded.toggle();
+        if (!isInCart){
+        isInCart = isInCart.toggle();
         final _catalog = CatalogModel();
-        final _cart = CartModel();
+        
         _cart.catalog = _catalog;
         _cart.add(widget.catalog);
         setState(() {});
+        }
       },
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(MyTheme.darkBluishColor),
           shape: MaterialStateProperty.all(const StadiumBorder()),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           ),
-      child: isAdded ? Icon(Icons.done) : "Add to Cart".text.make(),
+      child: isInCart ? Icon(Icons.done) : const Icon(CupertinoIcons.cart_badge_plus) ,
     );
   }
 }
