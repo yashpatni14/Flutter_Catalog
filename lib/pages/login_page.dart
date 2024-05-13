@@ -63,12 +63,13 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: const InputDecoration(
                           hintText: "Enter username",
                           labelText: "Username",
+                          hintStyle: TextStyle(color: Colors.black),
+                          labelStyle: TextStyle(color: Colors.black),
                         ),
                         validator: (value) {
                           if(value!.isEmpty){
                             return "Username cannot be empty";
                           }
-
                           return null;
                         },
                         onChanged: (value) {
@@ -81,6 +82,8 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: const InputDecoration(
                           hintText: "Enter passowrd",
                           labelText: "Password",
+                          hintStyle: TextStyle(color: Colors.black), 
+                          labelStyle: TextStyle(color: Colors.black),
                         ),
                         validator: (value) {
                           if(value!.isEmpty){

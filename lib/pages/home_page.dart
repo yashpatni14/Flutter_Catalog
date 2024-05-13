@@ -44,14 +44,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _cart = (VxState.store as MyStore).cart;
     return Scaffold(
       backgroundColor: MyTheme.creamColor,
-      floatingActionButton: FloatingActionButton(
-      onPressed:() => Navigator.pushNamed(context, MyRoutes.cartRoute) ,
-      backgroundColor: MyTheme.darkBluishColor,
-      foregroundColor: Colors.white,
-      child: const Icon(CupertinoIcons.cart),
-      ) ,
+      floatingActionButton: VxBuilder(
+        mutations: const {AddMutation, RemoveMutation},
+        builder: (context, store, status) => FloatingActionButton(
+         onPressed:() => Navigator.pushNamed(context, MyRoutes.cartRoute),
+         backgroundColor: MyTheme.darkBluishColor,
+         foregroundColor: Colors.white,
+        child: const Icon(CupertinoIcons.cart),
+        ).badge(color: Vx.black, size: 22, count: _cart.items.length,textStyle: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.white)),
+      ),
       body: SafeArea(
         child: Container(
           padding: Vx.m32,
