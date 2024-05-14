@@ -58,7 +58,7 @@ class _CartTotal extends StatelessWidget {
                     shape: MaterialStateProperty.all(const StadiumBorder()),
                     foregroundColor: MaterialStateProperty.all(Colors.white)),
             child: "Buy".text.make(),
-          ).w8(context)
+          ).w10(context)
         ],
       ),
     );
